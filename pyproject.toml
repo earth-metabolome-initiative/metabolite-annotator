@@ -1,0 +1,30 @@
+[project]
+name = "metabolite-annotator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Marco Visani", email = "92217074+mvisani@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "cache-decorator>=2.2.0",
+    "downloaders>=1.0.22",
+    "matchms>=0.32.0",
+    "pandas>=2.3.3",
+    "pysirius",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.1,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ipython>=9.11.0",
+    "pytest>=9.0.2",
+    "ruff>=0.15.7",
+]
+
+[tool.uv.sources]
+pysirius = { git = "https://github.com/sirius-ms/sirius-client-openAPI.git", subdirectory = "client-api_python/generated" }
