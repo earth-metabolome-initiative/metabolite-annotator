@@ -26,13 +26,21 @@ def default_cache_dir() -> Path:
     return home / ".cache/metabolite-annotator"
 
 
-os.environ["CACHE_DIR"] = f"{default_cache_dir()}/cache"
+def _set_cache_dir() -> Path:
+    env_dir: str | None = os.getenv("CACHE_DIR")
+    if not env_dir:
+        return default_cache_dir()
+
+    return Path(env_dir)
+
+
+os.environ["CACHE_DIR"] = f"{_set_cache_dir()}"
 
 
 @Cache(
     validity_duration=VALIDITY_DURATION,
 )
-def download_gnps(output_dir: str) -> pd.DataFrame:
+def _download_gnps(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
     if output.exists():
         output.unlink()
@@ -47,7 +55,7 @@ def download_gnps(output_dir: str) -> pd.DataFrame:
 @Cache(
     validity_duration=VALIDITY_DURATION,
 )
-def download_isdb_pos(output_dir: str) -> pd.DataFrame:
+def _download_isdb_pos(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
     if output.exists():
         output.unlink()
@@ -62,7 +70,7 @@ def download_isdb_pos(output_dir: str) -> pd.DataFrame:
 @Cache(
     validity_duration=VALIDITY_DURATION,
 )
-def download_isdb_neg(output_dir: str) -> pd.DataFrame:
+def _download_isdb_neg(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
     if output.exists():
         output.unlink()

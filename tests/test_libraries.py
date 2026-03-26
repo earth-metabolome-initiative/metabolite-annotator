@@ -1,12 +1,12 @@
 from metabolite_annotator.constants.urls import ISDB_POS_FILENAME
 from metabolite_annotator.data import load_isdb_pos
-from metabolite_annotator.download import default_cache_dir, download_isdb_pos
+from metabolite_annotator.download import _download_isdb_pos, default_cache_dir
 from metabolite_annotator.spectrum import Spectrum
 
 
 def test_download_isdb_pos():
     output = f"{default_cache_dir()}/libraries/{ISDB_POS_FILENAME}"
-    df = download_isdb_pos(output)
+    df = _download_isdb_pos(output)
     assert not df.empty
 
 

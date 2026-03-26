@@ -5,12 +5,12 @@ from tqdm.auto import tqdm
 
 from .constants.cache_duration import VALIDITY_DURATION
 from .download import (
+    _download_gnps,
+    _download_isdb_neg,
+    _download_isdb_pos,
     default_gnps_dir,
     default_isdb_neg_dir,
     default_isdb_pos_dir,
-    download_gnps,
-    download_isdb_neg,
-    download_isdb_pos,
 )
 from .spectrum import Spectrum
 
@@ -22,7 +22,7 @@ def load_gnps(file_name: str | None = None) -> list[Spectrum]:
     else:
         filename = file_name
 
-    _ = download_gnps(filename)
+    _ = _download_gnps(filename)
     spectra = []
     for spectrum in tqdm(
         load_from_mgf(filename),
@@ -45,7 +45,7 @@ def load_isdb_pos(file_name: str | None = None) -> list[Spectrum]:
     else:
         filename = file_name
 
-    _ = download_isdb_pos(filename)
+    _ = _download_isdb_pos(filename)
     spectra = []
     for spectrum in tqdm(
         load_from_mgf(filename),
@@ -70,7 +70,7 @@ def load_isdb_neg(file_name: str | None = None) -> list[Spectrum]:
     else:
         filename = file_name
 
-    _ = download_isdb_neg(filename)
+    _ = _download_isdb_neg(filename)
     spectra = []
     for spectrum in tqdm(
         load_from_mgf(filename),
