@@ -5,6 +5,7 @@ import pandas as pd
 from cache_decorator import Cache
 from downloaders import BaseDownloader
 
+from .constants.cache_duration import VALIDITY_DURATION
 from .constants.urls import (
     GNPS_FILENAME,
     GNPS_URL,
@@ -29,7 +30,7 @@ os.environ["CACHE_DIR"] = f"{default_cache_dir()}/cache"
 
 
 @Cache(
-    validity_duration="30d",
+    validity_duration=VALIDITY_DURATION,
 )
 def download_gnps(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
@@ -44,7 +45,7 @@ def download_gnps(output_dir: str) -> pd.DataFrame:
 
 
 @Cache(
-    validity_duration="30d",
+    validity_duration=VALIDITY_DURATION,
 )
 def download_isdb_pos(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
@@ -59,7 +60,7 @@ def download_isdb_pos(output_dir: str) -> pd.DataFrame:
 
 
 @Cache(
-    validity_duration="30d",
+    validity_duration=VALIDITY_DURATION,
 )
 def download_isdb_neg(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)

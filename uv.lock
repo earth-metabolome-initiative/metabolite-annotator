@@ -691,6 +691,7 @@ dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "pandas", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
     { name = "pysirius" },
+    { name = "tqdm" },
 ]
 
 [package.dev-dependencies]
@@ -707,6 +708,7 @@ requires-dist = [
     { name = "matchms", specifier = ">=0.32.0" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "pysirius", git = "https://github.com/sirius-ms/sirius-client-openAPI.git?subdirectory=client-api_python%2Fgenerated" },
+    { name = "tqdm", specifier = ">=4.67.3" },
 ]
 
 [package.metadata.requires-dev]

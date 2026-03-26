@@ -1,0 +1,1 @@
+VALIDITY_DURATION: str = "30d"
