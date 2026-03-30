@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
+from typing import Literal
 
-from dotenv import load_dotenv
-from PySirius import AccountCredentials, SiriusSDK
+from PySirius import AccountCredentials, ProjectInfo, PySiriusAPI, SiriusSDK
 
 from metabolite_annotator.config import Config
 
@@ -17,20 +17,24 @@ class Sirius:
             username=config.sirius_user,
             password=config.sirius_pw,
         )
-        self.api = self.sdk.attach_or_start_sirius(headless=True)
+        api = self.sdk.attach_or_start_sirius(headless=True)
+        if not api:
+            raise RuntimeError("Failed to start Sirius API.")
+        self.api: PySiriusAPI = api
         self.api.account().login(accept_terms, account_credentials)
         self.job_config = self.api.jobs().get_default_job_config()
         self.set_instrument_type(InstrumentType.Orbitrap)
 
         self.project_root: Path = config.sirius_result_dir
+        self.project_info: ProjectInfo | None = None
 
-    def to_string(self) -> str:
+    def job_config_to_string(self) -> str:
         return self.job_config.to_str()
 
-    def to_dict(self) -> dict:
+    def job_config_to_dict(self) -> dict:
         return self.job_config.to_dict()
 
-    def to_json(self) -> str:
+    def job_config_to_json(self) -> str:
         return self.job_config.to_json()
 
     def set_instrument_type(
@@ -50,3 +54,33 @@ class Sirius:
 
             case _:
                 raise ValueError("Unkown instrument type")
+
+    def create_project(
+        self, path_to_project: Path, project_name: str | None = None
+    ) -> None:
+        if not project_name:
+            project_name = path_to_project.stem
+        self.project_info = self.api.projects().create_project(
+            project_id=project_name, path_to_project=str(path_to_project.resolve())
+        )
+
+    def import_spectra(self, spectra_file: Path) -> None:
+        if not self.project_info:
+            raise ValueError("A project must be created before importing spectra.")
+
+        import_job = self.api.projects().import_preprocessed_data_as_job(
+            self.project_info.project_id,
+            input_files=[str(spectra_file.resolve())],
+        )
+        self.api.wait_for_job_completion(self.project_info, import_job)
+
+    def shutdown(self) -> Literal[False] | None:
+        if self.project_info:
+            self.api.projects().close_project(self.project_info.project_id)
+        return self.sdk.shutdown_sirius()
+
+    def run(self) -> None:
+        if not self.project_info:
+            raise ValueError("A project must be created before running a job.")
+        job = self.api.jobs().start_job(self.project_info.project_id, self.job_config)
+        self.api.wait_for_job_completion(self.project_info, job)
