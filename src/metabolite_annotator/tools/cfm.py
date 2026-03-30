@@ -11,6 +11,7 @@ from matchms.filtering import (
 )
 from matchms.importing import load_from_mgf
 from matchms.similarity import PrecursorMzMatch
+from tqdm.contrib import tzip
 
 from ..config import Config, IonMode
 from ..data.data import load_isdb_neg, load_isdb_pos
@@ -18,7 +19,7 @@ from ..spectrum import Spectrum
 from .spectral_db import SpectralDB
 
 
-class ISDB(SpectralDB):
+class CFM(SpectralDB):
     def __init__(self, config: Config, input_mgf: Path) -> None:
         super().__init__(config, input_mgf)
         self.results_dir: Path = config.cfmid_result_dir
@@ -51,8 +52,8 @@ class ISDB(SpectralDB):
 
     def annotate(self) -> pd.DataFrame:
         scores = calculate_scores(
-            references=self.query_spectra,
-            queries=self.database,
+            references=self.query_spectra,  # type: ignore
+            queries=self.database,  # type: ignore
             array_type="numpy",
             is_symmetric=False,
             similarity_function=PrecursorMzMatch(
@@ -63,14 +64,19 @@ class ISDB(SpectralDB):
         indices = np.where(np.asarray(scores.scores.to_array()))
         idx_row, idx_col = indices
         data = []
-        for x, y in tzip(idx_row, idx_col):
+        for x, y in tzip(
+            idx_row,
+            idx_col,
+            desc="Calculating MS/MS and entropy similarity scores",
+            leave=False,
+        ):
             msms_score, n_matches = self.ms2_similarity.pair(
-                self.msg_spectra[x], self.isdb_spectra[y]
+                self.query_spectra[x], self.database[y]
             )[()]
 
             entropy_sim = me.calculate_entropy_similarity(
-                self.msg_spectra[x].peaks,
-                self.isdb_spectra[y].peaks,
+                self.query_spectra[x].peaks,
+                self.database[y].peaks,
                 ms2_tolerance_in_da=0.01,
             )
 
@@ -81,19 +87,15 @@ class ISDB(SpectralDB):
                     "matched_peaks": n_matches if n_matches is not None else np.nan,
                     "matched_ratio": n_matches
                     / max(
-                        len(self.msg_spectra[x].peaks.intensities),
-                        len(self.isdb_spectra[y].peaks.intensities),
+                        len(self.query_spectra[x].peaks.intensities),
+                        len(self.database[y].peaks.intensities),
                     ),
-                    "feature_id": self.msg_spectra[x].get("feature_id") or x + 1,
+                    "feature_id": self.query_spectra[x].get("feature_id") or x + 1,
                     "reference_id": y,  # code copied from https://github.com/mandelbrot-project/met_annot_enhancer/blob/f8346fd3f7a9775d1d6638cf091d019167ba7ce1/src/dev/spectral_lib_matcher.py#L175
-                    "inchikey_isdb": self.isdb_spectra[y].get("compound_name"),
-                    "smiles_isdb": self.isdb_spectra[y].get("smiles"),
-                    "inchikey_msg": self.msg_spectra[x].get("inchikey"),
-                    "smiles_msg": self.msg_spectra[x].get("smiles"),
-                    "adduct": self.msg_spectra[x].get("adduct"),
-                    "instrument": self.msg_spectra[x].get("instrument_type"),
-                    "identifier": self.msg_spectra[x].get("identifier"),
-                    "fold": self.msg_spectra[x].get("fold"),
+                    "predicted_inchikey": self.database[y].get("compound_name"),
+                    "predicted_smiles": self.database[y].get("smiles"),
                 }
             )
         df = pd.DataFrame(data)
+
+        return df
