@@ -36,6 +36,10 @@ class CFM(SpectralDB):
                 raise ValueError(f"Unsupported ionization mode: {self.ion_mode}")
 
     def load_mgf(self) -> list[Spectrum]:
+        if self.input_mgf.suffix.lower() != ".mgf":
+            raise ValueError(
+                f"Input file must be an .mgf file, got {self.input_mgf.suffix}"
+            )
         spectra = [i for i in load_from_mgf(self.input_mgf)]
         spectra = [i for i in spectra if require_correct_ms_level(i)]
         spectra = [default_filters(spectrum) for spectrum in spectra]

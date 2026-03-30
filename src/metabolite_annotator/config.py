@@ -1,6 +1,6 @@
 import os
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -23,25 +23,22 @@ def _default_cache_dir() -> Path:
     return home / ".cache/metabolite-annotator"
 
 
-class IonMode(Enum):
+class IonMode(StrEnum):
     POS = "pos"
     NEG = "neg"
 
 
-class PrecursorMZToleranceType(Enum):
+class PrecursorMZToleranceType(StrEnum):
     PPM = "ppm"
-    Dalton = "Dalton"
+    DALTON = "Dalton"
 
 
 @dataclass
 class Config:
     cache_dir: Path = field(default_factory=_default_cache_dir)
     project_root: Path = field(default_factory=lambda: Path.cwd())
-    sirius_result_dir: Path = field(
-        default_factory=lambda: Path.cwd() / "sirius_results"
-    )
-    cfmid_result_dir: Path = field(default_factory=lambda: Path.cwd() / "cfmid_results")
-    gnps_result_dir: Path = field(default_factory=lambda: Path.cwd() / "gnps_results")
+
+    results_dir: Path = field(default_factory=lambda: Path.cwd() / "results")
 
     ionization_mode: IonMode = IonMode.POS
     precursor_mz_tolerance_type: PrecursorMZToleranceType = PrecursorMZToleranceType.PPM
@@ -57,20 +54,32 @@ class Config:
         os.environ["CACHE_DIR"] = str(self.cache_dir)
 
     @property
+    def sirius_result_dir(self) -> Path:
+        return self.results_dir / "sirius"
+
+    @property
+    def cfmid_result_dir(self) -> Path:
+        return self.results_dir / "cfmid"
+
+    @property
+    def gnps_result_dir(self) -> Path:
+        return self.results_dir / "gnps"
+
+    @property
     def validity_duration(self) -> str:
         return VALIDITY_DURATION
 
     @property
-    def isdb_pos_path(self) -> str:
-        return str(self.cache_dir / "libraries" / ISDB_POS_FILENAME)
+    def isdb_pos_path(self) -> Path:
+        return self.cache_dir / "libraries" / ISDB_POS_FILENAME
 
     @property
-    def isdb_neg_path(self) -> str:
-        return str(self.cache_dir / "libraries" / ISDB_NEG_FILENAME)
+    def isdb_neg_path(self) -> Path:
+        return self.cache_dir / "libraries" / ISDB_NEG_FILENAME
 
     @property
-    def gnps_path(self) -> str:
-        return str(self.cache_dir / "libraries" / GNPS_FILENAME)
+    def gnps_path(self) -> Path:
+        return self.cache_dir / "libraries" / GNPS_FILENAME
 
     @property
     def sirius_user(self) -> str:

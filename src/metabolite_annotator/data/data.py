@@ -40,7 +40,7 @@ def load_gnps(file_name: str | None = None) -> list[Spectrum]:
 )
 def load_isdb_pos(file_name: str | None = None) -> list[Spectrum]:
     if not file_name:
-        filename = config.isdb_pos_path
+        filename = str(config.isdb_pos_path)
     else:
         filename = file_name
 
