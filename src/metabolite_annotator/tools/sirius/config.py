@@ -1,25 +1,28 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from PySirius import AccountCredentials, SiriusSDK
 
-from .instrument import InstrumentType
+from metabolite_annotator.config import Config
 
-load_dotenv()
+from .instrument import InstrumentType
 
 
 class Sirius:
-    def __init__(self) -> None:
+    def __init__(self, config: Config) -> None:
         self.sdk = SiriusSDK()
         accept_terms = True  # ensure you accept the terms
         account_credentials = AccountCredentials(
-            username=os.getenv("SIRIUS_USER"),
-            password=os.getenv("SIRIUS_PW"),
+            username=config.sirius_user,
+            password=config.sirius_pw,
         )
         self.api = self.sdk.attach_or_start_sirius(headless=True)
         self.api.account().login(accept_terms, account_credentials)
         self.job_config = self.api.jobs().get_default_job_config()
-        self.set_instrument_type()
+        self.set_instrument_type(InstrumentType.Orbitrap)
+
+        self.project_root: Path = config.sirius_result_dir
 
     def to_string(self) -> str:
         return self.job_config.to_str()
