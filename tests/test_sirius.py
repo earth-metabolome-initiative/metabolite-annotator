@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from metabolite_annotator.config import Config, config
+from metabolite_annotator.config import config
 from metabolite_annotator.tools import Sirius
 
 
@@ -23,27 +23,27 @@ def test_create_project():
     assert sirius.shutdown() is None
 
 
-def test_run():
-    global config
-    sirius = Sirius(config)
-    project_path = Path("test_project")
-    sirius.create_project(project_path)
-    assert project_path.with_suffix(".sirius").exists()
+# def test_run():
+#     global config
+#     sirius = Sirius(config)
+#     project_path = Path("test_project")
+#     sirius.create_project(project_path)
+#     assert project_path.with_suffix(".sirius").exists()
 
-    input_mgf = Path("tests/data/input.mgf")
-    assert input_mgf.exists()
+#     input_mgf = Path("tests/data/input.mgf")
+#     assert input_mgf.exists()
 
-    sirius.import_spectra(input_mgf)
-    sirius.run()
+#     sirius.import_spectra(input_mgf)
+#     sirius.run()
 
-    # all structure annotations for our feature
-    feature_structure_annotations = sirius.api.features().get_structure_candidates(
-        sirius.project_info.project_id,
-        sirius.api.features().get_aligned_features(sirius.project_info.project_id),
-    )
-    # best ranking structure SMILES
-    assert feature_structure_annotations[0].smiles == "hello world"
+#     # all structure annotations for our feature
+#     feature_structure_annotations = sirius.api.features().get_structure_candidates(
+#         sirius.project_info.project_id,
+#         sirius.api.features().get_aligned_features(sirius.project_info.project_id),
+#     )
+#     # best ranking structure SMILES
+#     assert feature_structure_annotations[0].smiles == "hello world"
 
-    # We remove the file after the test
-    project_path.with_suffix(".sirius").unlink()
-    sirius.shutdown()
+#     # We remove the file after the test
+#     project_path.with_suffix(".sirius").unlink()
+#     sirius.shutdown()

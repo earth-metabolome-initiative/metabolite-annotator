@@ -12,8 +12,11 @@ dependencies = [
     "click>=8.3.1",
     "downloaders>=1.0.22",
     "matchms>=0.32.0",
+    "ms-entropy>=1.4.2",
+    "numpy>=2.2.6",
     "pandas>=2.3.3",
     "pysirius",
+    "python-dotenv>=1.2.2",
     "tqdm>=4.67.3",
 ]
 

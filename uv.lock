@@ -701,9 +701,12 @@ dependencies = [
     { name = "click" },
     { name = "downloaders" },
     { name = "matchms" },
+    { name = "ms-entropy" },
+    { name = "numpy" },
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "pandas", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
     { name = "pysirius" },
+    { name = "python-dotenv" },
     { name = "tqdm" },
 ]
 
@@ -720,8 +723,11 @@ requires-dist = [
     { name = "click", specifier = ">=8.3.1" },
     { name = "downloaders", specifier = ">=1.0.22" },
     { name = "matchms", specifier = ">=0.32.0" },
+    { name = "ms-entropy", specifier = ">=1.4.2" },
+    { name = "numpy", specifier = ">=2.2.6" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "pysirius", git = "https://github.com/sirius-ms/sirius-client-openAPI.git?subdirectory=client-api_python%2Fgenerated" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "tqdm", specifier = ">=4.67.3" },
 ]
 
@@ -730,6 +736,49 @@ dev = [
     { name = "ipython", specifier = ">=9.11.0" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "ruff", specifier = ">=0.15.7" },
+]
+
+[[package]]
+name = "ms-entropy"
+version = "1.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/80/53/c20e036fe5be027670bae30da78cc0cb5b8a41ab6e1cddbe92674fb51f70/ms_entropy-1.4.2.tar.gz", hash = "sha256:3da76612d9f76b9c9834da5987a71c2d109ce5bf2dfb4a8b02ba8a214347820c", size = 310674, upload-time = "2026-03-17T13:40:45.587Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/82/ed9b261ca87bf9c97b62ab9c4a7fdcba3125a577333c31665b5b2968fbf4/ms_entropy-1.4.2-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:f5a90aa08509191100fdae55e3055b39f23ab663364a0064ce7420bdd036c12f", size = 310292, upload-time = "2026-03-17T13:39:30.923Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/27/60b92a4ccb0ce9d3563a95e1200c44f0e5856f07a6f12a20ca840f75a025/ms_entropy-1.4.2-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:cec0f12d8c781248478308b14bea7b65a0b9df249b0a25805ff4336bf1004a90", size = 199940, upload-time = "2026-03-17T13:39:32.549Z" },
+    { url = "https://files.pythonhosted.org/packages/20/de/0dc0fc4ada873cb9556d23410df8bfaa51b59688cbf9e7c962c2649873ff/ms_entropy-1.4.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:795b96189ea9b4d3095ed5633916928981c89470c68e1dc6f420dcbd23ac829d", size = 193315, upload-time = "2026-03-17T13:39:34.328Z" },
+    { url = "https://files.pythonhosted.org/packages/8e/e4/467c8804fe1bb76b40776dc938b0c7fcd1e46ab9bb03adf70e19b53a34a1/ms_entropy-1.4.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:33c52f7ce9ba2bc764c86eae0083a1afacd52617c0fc1d5826b42e8be638620b", size = 234258, upload-time = "2026-03-17T13:39:35.857Z" },
+    { url = "https://files.pythonhosted.org/packages/54/47/b38e67b54dbdba6fc535e23b6a624ac2dc029e101d2f6bdf21b17d2b39ba/ms_entropy-1.4.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:04227375730b2aef8df7275bf5f09de16d1079655ff9e33be90cf6af7ae792ec", size = 235446, upload-time = "2026-03-17T13:39:37.302Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/d9/249763cdcb33bec0aa3673566bc6d16c61ae5cc3d9829125b27190a08251/ms_entropy-1.4.2-cp312-cp312-win32.whl", hash = "sha256:1c6a22041ac8d8a12a8bb0f1786e186a8722975cef404b1743b5495337cb8de4", size = 170480, upload-time = "2026-03-17T13:39:38.641Z" },
+    { url = "https://files.pythonhosted.org/packages/01/ae/1e7bad5d5cafca719d974dce7c0c1ebfe98b0b510eafeb9907183303c9f4/ms_entropy-1.4.2-cp312-cp312-win_amd64.whl", hash = "sha256:e350379f37d5877ca213c8b5b2ab4927a138a59604e9d9853d8fe9b5b6f3d419", size = 187239, upload-time = "2026-03-17T13:39:40.136Z" },
+    { url = "https://files.pythonhosted.org/packages/28/ce/454f4167b87337b3ffe92ea96ae7749c6e5a98025979c0eb97af8bccee92/ms_entropy-1.4.2-cp312-cp312-win_arm64.whl", hash = "sha256:f4a868a778cb54171555742c28ed2ae172c980bbe55b6c1d56209ca7b88d9f5f", size = 166924, upload-time = "2026-03-17T13:39:41.463Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/9f/c81cb4194e154ed3c94cda46c358c0ba977a0ffa80c3afb9b9d06c3dcc4b/ms_entropy-1.4.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:9d9ffd75b90223180e29635a55ad089a1f8d23e7cbe77560f909dff349f63fde", size = 313132, upload-time = "2026-03-17T13:39:42.936Z" },
+    { url = "https://files.pythonhosted.org/packages/40/52/56b667b3afd62cc66ef41c417f1565bfc8c487341d4f5d88c08879666f84/ms_entropy-1.4.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:a234ce9d2505797cdb8938ef7898821d3b7fa904cc4119e396ab146b3e249499", size = 202153, upload-time = "2026-03-17T13:39:44.601Z" },
+    { url = "https://files.pythonhosted.org/packages/be/72/5ce99639e4077b159e281f04c8d87ef81437fa304b64edfb3f90b99a268c/ms_entropy-1.4.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:2746096db556a4ee6e62ce362e4725aac4c0e4fab10994164b4324f06e23a4d2", size = 194077, upload-time = "2026-03-17T13:39:45.985Z" },
+    { url = "https://files.pythonhosted.org/packages/92/08/b00d25b054bdde8e47b0209650219f45209ca6b3dcad5696fe45e59b330d/ms_entropy-1.4.2-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:79841eea0e1b0929e9ef77be7b2594d1a1c1b928746eb9176127e4f4b8808585", size = 233107, upload-time = "2026-03-17T13:39:47.641Z" },
+    { url = "https://files.pythonhosted.org/packages/59/66/69fc66572f2697926dda8d306907a94fa65de42c5cb40409a18d3518739f/ms_entropy-1.4.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:b4161538d53f29cbd3a59a3ff1359fb3b4f2aadbf7bcb6bf5957d8e09011ac5d", size = 234487, upload-time = "2026-03-17T13:39:49.252Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/09/30907af83a6d71fc4f37b18c9256afe5316a0bd7af46092782e3ab27d961/ms_entropy-1.4.2-cp313-cp313-win32.whl", hash = "sha256:1dc90eebce81918169f394977afe951699e4fe3fcc80a1f74846153d3f226d60", size = 169772, upload-time = "2026-03-17T13:39:50.712Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/7b/ef6636014d27e35b4570e2aab89db0e7ba6eabf037d8421882f247dae49b/ms_entropy-1.4.2-cp313-cp313-win_amd64.whl", hash = "sha256:d6825275c58142622602adec1d47c68ba457bc4caa537888f7f1dd0ba2711667", size = 186300, upload-time = "2026-03-17T13:39:52.099Z" },
+    { url = "https://files.pythonhosted.org/packages/df/00/318efa6ba9774f70b06246b7230eb9ea524b149d42e7392943983375f8ac/ms_entropy-1.4.2-cp313-cp313-win_arm64.whl", hash = "sha256:4be400c6fa09744a1ef78ca72d9c50238324bcf4f5394c83239a9ac6c6e73b5a", size = 166350, upload-time = "2026-03-17T13:39:53.395Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/7d/2b038e315418e0472be728e3c583ef68c1ff5b139a5a90e65ed2a699e343/ms_entropy-1.4.2-cp314-cp314-macosx_10_15_universal2.whl", hash = "sha256:cc45a5138452a62160e8a015e5f6ba614d1b7a64e1802730b1cc60407e91abf9", size = 314935, upload-time = "2026-03-17T13:39:55.093Z" },
+    { url = "https://files.pythonhosted.org/packages/40/43/d26331852c9ae995a7709e0aa19bda32798457416f06a4752ce753b3ad55/ms_entropy-1.4.2-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:a1b678e9966eace5e9d5a23c2212ddc6a3e07e4373d053a1cac4a2916202ac3b", size = 202781, upload-time = "2026-03-17T13:39:56.703Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/12/b8525e4523a50d209673898cfaa37c5744899a3163e310e159fdf648d11b/ms_entropy-1.4.2-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:e9b565ef10025a8939bb73b81aa1dfabd5225f16427bc22016adaf7fb293bd98", size = 195140, upload-time = "2026-03-17T13:39:59.2Z" },
+    { url = "https://files.pythonhosted.org/packages/db/0e/45680c3fcd51bb211bb2e106d38893dc8f793f28dd3c5bcb50d2059c6506/ms_entropy-1.4.2-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c477a3829fc92ca8e9dfc57bacf958d4a9b7067238148b50d82153357bdb05e6", size = 233577, upload-time = "2026-03-17T13:40:00.901Z" },
+    { url = "https://files.pythonhosted.org/packages/65/03/dd2348470eb7ec02e21db30c3fc924d77ac31698b7acef65ae3d6a344c4c/ms_entropy-1.4.2-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:a8e082d27fa85cb95fcd1c84a1cdb381f3ddc61f526dcea221de53f4b628d5d7", size = 234690, upload-time = "2026-03-17T13:40:02.331Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/77/1bd7ebd1e8c5c04bb3eaef962bfc00afbdb0f30b7e04553471b9d2f60125/ms_entropy-1.4.2-cp314-cp314-win32.whl", hash = "sha256:302cce1ba5d1e3b3723cb5ee9cb70d18e47fb7b5095a258ae7fd851d1236e996", size = 173190, upload-time = "2026-03-17T13:40:03.874Z" },
+    { url = "https://files.pythonhosted.org/packages/e5/a2/966774c6d1471fd04e4a7007754e27652af43733e969780ced45f2d7a420/ms_entropy-1.4.2-cp314-cp314-win_amd64.whl", hash = "sha256:6c19975f1a6127eb0e54b276d89d08f9740717a4eec42304e386edcab05dbb8f", size = 189920, upload-time = "2026-03-17T13:40:05.241Z" },
+    { url = "https://files.pythonhosted.org/packages/af/0b/4657cdd708fd3f7481161895b0a57d72034581b572476b7db351603cc413/ms_entropy-1.4.2-cp314-cp314-win_arm64.whl", hash = "sha256:07c415b0cd565fc25fd818e2bcde489353843e54188af98df820206994d4d0f5", size = 169618, upload-time = "2026-03-17T13:40:06.619Z" },
+    { url = "https://files.pythonhosted.org/packages/af/ef/c37347bc46f32d0dac9189d2d35577f24b68f9995d9926c5f1f8c210719e/ms_entropy-1.4.2-cp314-cp314t-macosx_10_15_universal2.whl", hash = "sha256:934065daf37abb06e836e3e83b1e9eecd11f7b8499519871b12ee7576550bc97", size = 330978, upload-time = "2026-03-17T13:40:08.266Z" },
+    { url = "https://files.pythonhosted.org/packages/43/72/bb0c5fa38aab14c96c766b346d4282b7682feaf4804981b8dcd1f37c8971/ms_entropy-1.4.2-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:105c36ffef2aacd0baee7ee2a159903a06c5f18f988509e513ec41a4cc54f138", size = 209822, upload-time = "2026-03-17T13:40:09.829Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/68/006ab9ac397a00226c5b96f251be829e9c2353cf92c3dd7ffae5a5037140/ms_entropy-1.4.2-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:694722ed73b1a433d09552d0145ffb228b7758dd1774f0148e96f8439efca4d2", size = 203947, upload-time = "2026-03-17T13:40:11.639Z" },
+    { url = "https://files.pythonhosted.org/packages/74/b0/d30c45374f2028667fa8c039e248e1e6d22d3641a60f91ad93f3b52281f1/ms_entropy-1.4.2-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:61ce35f7608de087e6d596bd438beb5813ae898132676f18355cecbad8d1ac47", size = 231620, upload-time = "2026-03-17T13:40:13.256Z" },
+    { url = "https://files.pythonhosted.org/packages/97/1d/48a82933ab9968b6fa16a18f532d8774c967971d9b09c485eb80436b16f5/ms_entropy-1.4.2-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:26928dfa08037ff095304da7b33ee0b50b26d2333436c742becca8fd87167bb6", size = 233595, upload-time = "2026-03-17T13:40:14.821Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/56/ba9465dd266b549a791a43d8841f8bd12208e19c2b9cb39d39676ca7f7ac/ms_entropy-1.4.2-cp314-cp314t-win32.whl", hash = "sha256:15f92e3a46b0d97ae8ea0aa1c2c4549aeb0fc0d368b2681e3864302318b7ca7b", size = 186872, upload-time = "2026-03-17T13:40:16.515Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/03/9f5822b069e97e800c89748e63becc5ddac67924a8f8671fb6e9b5e8320f/ms_entropy-1.4.2-cp314-cp314t-win_amd64.whl", hash = "sha256:e9a87d7ee8a0d1fcf8265b42676a2d001fc89f2aadabf4820df19adf694634a0", size = 207207, upload-time = "2026-03-17T13:40:18.096Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/3c/881e35c5580684bb4b5b831b1c86270a791710310ad3d88571215d143808/ms_entropy-1.4.2-cp314-cp314t-win_arm64.whl", hash = "sha256:275563661d2ffdca48731da6adbda6720b22c9452ef16252d644f40a0c8e3304", size = 175919, upload-time = "2026-03-17T13:40:19.466Z" },
 ]
 
 [[package]]
@@ -1233,6 +1282,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/82/ed/0301aeeac3e5353ef3d94b6ec08bbcabd04a72018415dcb29e588514bba8/python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3", size = 50135, upload-time = "2026-03-01T16:00:26.196Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0b/d7/1959b9648791274998a9c3526f6d0ec8fd2233e4d4acce81bbae76b44b2a/python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a", size = 22101, upload-time = "2026-03-01T16:00:25.09Z" },
 ]
 
 [[package]]
