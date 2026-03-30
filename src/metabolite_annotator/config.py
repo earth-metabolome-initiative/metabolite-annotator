@@ -1,8 +1,11 @@
 import os
 from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
 
 from dotenv import load_dotenv
+from matchms.similarity import ModifiedCosineGreedy
+from matchms.similarity.BaseSimilarity import BaseSimilarity
 
 from .constants.cache_duration import VALIDITY_DURATION
 from .constants.urls import GNPS_FILENAME, ISDB_NEG_FILENAME, ISDB_POS_FILENAME
@@ -20,6 +23,16 @@ def _default_cache_dir() -> Path:
     return home / ".cache/metabolite-annotator"
 
 
+class IonMode(Enum):
+    POS = "pos"
+    NEG = "neg"
+
+
+class PrecursorMZToleranceType(Enum):
+    PPM = "ppm"
+    Dalton = "Dalton"
+
+
 @dataclass
 class Config:
     cache_dir: Path = field(default_factory=_default_cache_dir)
@@ -27,6 +40,13 @@ class Config:
     sirius_result_dir: Path = field(
         default_factory=lambda: Path.cwd() / "sirius_results"
     )
+    cfmid_result_dir: Path = field(default_factory=lambda: Path.cwd() / "cfmid_results")
+    gnps_result_dir: Path = field(default_factory=lambda: Path.cwd() / "gnps_results")
+
+    ionization_mode: IonMode = IonMode.POS
+    precursor_mz_tolerance_type: PrecursorMZToleranceType = PrecursorMZToleranceType.PPM
+    precursor_mz_tolerance: float = 20.0
+    ms2_similarity: BaseSimilarity = ModifiedCosineGreedy(tolerance=0.01)
 
     def __post_init__(self) -> None:
         if not isinstance(self.cache_dir, Path):
