@@ -25,6 +25,8 @@ def load_gnps(file_name: str | None = None) -> list[Spectrum]:
         desc="Loading GNPS spectra",
         leave=False,
     ):
+        spectrum = default_filters(spectrum)
+        spectrum = normalize_intensities(spectrum)
         spectrum = Spectrum(
             mz=spectrum.mz,
             intensities=spectrum.intensities,

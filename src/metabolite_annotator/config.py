@@ -43,7 +43,7 @@ class Config:
     ionization_mode: IonMode = IonMode.POS
     precursor_mz_tolerance_type: PrecursorMZToleranceType = PrecursorMZToleranceType.PPM
     precursor_mz_tolerance: float = 20.0
-    ms2_similarity: BaseSimilarity = ModifiedCosineGreedy(tolerance=0.01)
+    ms2_similarity: BaseSimilarity = ModifiedCosineGreedy()
 
     def __post_init__(self) -> None:
         if not isinstance(self.cache_dir, Path):

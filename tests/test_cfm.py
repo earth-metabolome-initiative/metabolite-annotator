@@ -23,10 +23,9 @@ def test_cfm_run():
     config.cfmid_result_dir.mkdir(parents=True, exist_ok=True)
     cfm = CFM(config, input_mgf)
     df = cfm.annotate()
+    df.to_csv(config.cfmid_result_dir / "cfm_results.csv", index=False)
     assert len(cfm.database) > 0
     assert len(cfm.query_spectra) > 0
     assert not df.empty
     assert df.isna().sum().sum() == 0
-
-    df.to_csv(results_dir / "cfm_results.csv", index=False)
     delete_folder(results_dir)

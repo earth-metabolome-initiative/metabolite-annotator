@@ -74,14 +74,16 @@ class CFM(SpectralDB):
             desc="Calculating MS/MS and entropy similarity scores",
             leave=False,
         ):
+            query_spectrum = self.query_spectra[x]
+            reference_spectrum = self.database[y]
             msms_score, n_matches = self.ms2_similarity.pair(
-                self.query_spectra[x], self.database[y]
+                query_spectrum,
+                reference_spectrum,
             )[()]
 
             entropy_sim = me.calculate_entropy_similarity(
-                self.query_spectra[x].peaks,
-                self.database[y].peaks,
-                ms2_tolerance_in_da=0.01,
+                query_spectrum.peaks,
+                reference_spectrum.peaks,
             )
 
             data.append(
@@ -91,13 +93,29 @@ class CFM(SpectralDB):
                     "matched_peaks": n_matches if n_matches is not None else np.nan,
                     "matched_ratio": n_matches
                     / max(
-                        len(self.query_spectra[x].peaks.intensities),
-                        len(self.database[y].peaks.intensities),
+                        len(query_spectrum.peaks.intensities),
+                        len(reference_spectrum.peaks.intensities),
                     ),
-                    "feature_id": self.query_spectra[x].get("feature_id") or x + 1,
+                    "feature_id": query_spectrum.get("feature_id") or x + 1,
                     "reference_id": y,  # code copied from https://github.com/mandelbrot-project/met_annot_enhancer/blob/f8346fd3f7a9775d1d6638cf091d019167ba7ce1/src/dev/spectral_lib_matcher.py#L175
-                    "predicted_inchikey": self.database[y].get("compound_name"),
-                    "predicted_smiles": self.database[y].get("smiles"),
+                    "predicted_inchikey": reference_spectrum.get("compound_name"),
+                    "predicted_smiles": reference_spectrum.get("smiles"),
+                    "feature_entropy": me.calculate_spectral_entropy(
+                        query_spectrum.peaks
+                    ),
+                    "reference_entropy": me.calculate_spectral_entropy(
+                        reference_spectrum.peaks
+                    ),
+                    "abs_precursor_mz_diff": abs(
+                        query_spectrum.get("precursor_mz")
+                        - reference_spectrum.get("precursor_mz")
+                    ),
+                    "ppm_precursor_mz_diff": abs(
+                        query_spectrum.get("precursor_mz")
+                        - reference_spectrum.get("precursor_mz")
+                    )
+                    / reference_spectrum.get("precursor_mz")
+                    * 1e6,
                 }
             )
         df = pd.DataFrame(data)
