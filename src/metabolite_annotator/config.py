@@ -33,6 +33,11 @@ class PrecursorMZToleranceType(StrEnum):
     DALTON = "Dalton"
 
 
+class FBMSimilarityType(StrEnum):
+    COSINE = "cosine"
+    ENTROPY = "spectral_entropy"
+
+
 @dataclass
 class Config:
     project_root: Path = field(default_factory=lambda: Path.cwd())
@@ -109,6 +114,9 @@ class Config:
         return pw
 
     sirius_instrument_type: InstrumentType = InstrumentType.Orbitrap
+    fbmn_similarity_type: FBMSimilarityType = FBMSimilarityType.ENTROPY
+    knn_neighbours: int = 5
+    fbmn_sim_threshold: float = 0.7
 
 
 # Module-level singleton — instantiated at import time so CACHE_DIR is set

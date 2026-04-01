@@ -702,11 +702,13 @@ dependencies = [
     { name = "downloaders" },
     { name = "matchms" },
     { name = "ms-entropy" },
+    { name = "networkx" },
     { name = "numpy" },
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "pandas", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
     { name = "pysirius" },
     { name = "python-dotenv" },
+    { name = "scikit-learn" },
     { name = "tqdm" },
 ]
 
@@ -724,10 +726,12 @@ requires-dist = [
     { name = "downloaders", specifier = ">=1.0.22" },
     { name = "matchms", specifier = ">=0.32.0" },
     { name = "ms-entropy", specifier = ">=1.4.2" },
+    { name = "networkx", specifier = ">=3.4.2" },
     { name = "numpy", specifier = ">=2.2.6" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "pysirius", git = "https://github.com/sirius-ms/sirius-client-openAPI.git?subdirectory=client-api_python%2Fgenerated" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
+    { name = "scikit-learn", specifier = ">=1.8.0" },
     { name = "tqdm", specifier = ">=4.67.3" },
 ]
 
