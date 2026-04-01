@@ -100,7 +100,7 @@ class Config:
         user = os.getenv("SIRIUS_USER")
         if not user:
             raise RuntimeError(
-                "Environment variable SIRIUS_USER is not set ! Please set it in a .env file in the current directory."
+                "Environment variable SIRIUS_USER is not set ! Please set it in a .env or in your .bashrc file file in the current directory."
             )
         return user
 
@@ -109,7 +109,7 @@ class Config:
         pw = os.getenv("SIRIUS_PW")
         if not pw:
             raise RuntimeError(
-                "Environment variable SIRIUS_PW is not set ! Please set it in a .env file in the current directory."
+                "Environment variable SIRIUS_PW is not set ! Please set it in a .env or in your .bashrc file file in the current directory."
             )
         return pw
 

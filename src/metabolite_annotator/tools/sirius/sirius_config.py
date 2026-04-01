@@ -97,4 +97,6 @@ class Sirius:
                 d["feature_id"] = feature.external_feature_id
                 res.append(d)
 
+        df = pd.DataFrame(res)
+        df.drop(columns=["fingerprint", "structureSvg", "spectralLibraryMatches", "dbLinks"], inplace=True)
         return pd.DataFrame(res)
