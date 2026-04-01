@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from metabolite_annotator.config import Config, config
+from metabolite_annotator.config import Config
 from metabolite_annotator.tools.cfm import CFM
 
 
@@ -14,7 +14,6 @@ def delete_folder(pth: Path) -> None:
 
 
 def test_cfm_run():
-    global config
     input_mgf = Path("tests/data/input.mgf")
     results_dir = Path("tests/results").resolve()
     results_dir.mkdir(parents=True, exist_ok=True)

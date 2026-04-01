@@ -16,6 +16,7 @@ from ..config import Config, IonMode
 from ..data.data import load_gnps
 from ..spectrum import Spectrum
 from .spectral_db import SpectralDB
+from typing import cast
 
 
 class GNPS(SpectralDB):
@@ -44,6 +45,7 @@ class GNPS(SpectralDB):
         spectra = [i for i in spectra if require_correct_ms_level(i)]
         spectra = [default_filters(spectrum) for spectrum in spectra]
         spectra = [normalize_intensities(spectrum) for spectrum in spectra]
+        spectra = cast(list[Spectrum], spectra)
         spectra = [
             Spectrum(
                 mz=spectrum.mz,
@@ -65,8 +67,8 @@ class GNPS(SpectralDB):
         data = []
         for chunk_number, chunk in enumerate(tqdm(chunks_query)):
             scores = calculate_scores(
-                references=chunk,
-                queries=self.database,
+                references=chunk,  # type: ignore
+                queries=self.database,  # type: ignore
                 similarity_function=PrecursorMzMatch(
                     tolerance=self.precursor_mz_tolerance,
                     tolerance_type=self.precursor_mz_tolerance_type.value,
@@ -86,6 +88,7 @@ class GNPS(SpectralDB):
                 if x >= y:
                     continue
                 res = self.ms2_similarity.pair(query_spectrum, reference_spectrum)
+                res = cast(dict, res)
                 try:
                     msms_score, _ = res["score"], res["matches"]
                 except:
@@ -112,11 +115,11 @@ class GNPS(SpectralDB):
                             reference_spectrum.peaks
                         ),
                         "abs_precursor_mz_diff": abs(
-                            query_spectrum.get("precursor_mz")
+                            query_spectrum.get("precursor_mz")  # type: ignore
                             - reference_spectrum.get("precursor_mz")
                         ),
                         "ppm_precursor_mz_diff": abs(
-                            query_spectrum.get("precursor_mz")
+                            query_spectrum.get("precursor_mz")  # type: ignore
                             - reference_spectrum.get("precursor_mz")
                         )
                         / reference_spectrum.get("precursor_mz")
