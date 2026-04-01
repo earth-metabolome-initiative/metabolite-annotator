@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from metabolite_annotator.config import config
 from metabolite_annotator.tools import Sirius
 
@@ -37,13 +36,26 @@ def test_run():
     sirius.run()
 
     # all structure annotations for our feature
-    first_feature = sirius.api.features().get_aligned_features(sirius.project_info.project_id)[0]
+    first_feature = sirius.api.features().get_aligned_features(
+        sirius.project_info.project_id
+    )[0]
     feature_structure_annotations = sirius.api.features().get_structure_candidates(
         sirius.project_info.project_id,
         first_feature.aligned_feature_id,
     )
     # best ranking structure SMILES
-    assert feature_structure_annotations[0].to_dict() == "AXFAVZQXPFQIEI"
+    assert feature_structure_annotations[0].to_dict()["inchiKey"] == "AXFAVZQXPFQIEI"
+    # res = []
+    # for feature in sirius.api.features().get_aligned_features(
+    #     sirius.project_info.project_id
+    # ):
+    #     for annotation in sirius.api.features().get_structure_candidates(
+    #         sirius.project_info.project_id,
+    #         feature.aligned_feature_id,
+    #     ):
+    #         d = annotation.to_dict()
+    #         d["feature_id"] = feature.external_feature_id
+    #         res.append(d)
 
     # We remove the file after the test
     project_path.with_suffix(".sirius").unlink()

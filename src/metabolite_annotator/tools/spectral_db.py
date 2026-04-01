@@ -16,6 +16,7 @@ class SpectralDB(ABC):
         )
         self.precursor_mz_tolerance: float = config.precursor_mz_tolerance
         self.ms2_similarity: BaseSimilarity = config.ms2_similarity
+        self.config: Config = config
 
     @abstractmethod
     def load_database(self) -> list[Spectrum]:

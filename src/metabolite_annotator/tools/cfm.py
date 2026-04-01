@@ -29,9 +29,9 @@ class CFM(SpectralDB):
     def load_database(self) -> list[Spectrum]:
         match self.ion_mode:
             case IonMode.POS:
-                return load_isdb_pos()
+                return load_isdb_pos(str(self.config.isdb_pos_path))
             case IonMode.NEG:
-                return load_isdb_neg()
+                return load_isdb_neg(str(self.config.isdb_neg_path))
             case _:
                 raise ValueError(f"Unsupported ionization mode: {self.ion_mode}")
 
@@ -90,12 +90,6 @@ class CFM(SpectralDB):
                 {
                     self.ms2_similarity.__class__.__name__: msms_score,
                     "entropy_similarity": entropy_sim,
-                    "matched_peaks": n_matches if n_matches is not None else np.nan,
-                    "matched_ratio": n_matches
-                    / max(
-                        len(query_spectrum.peaks.intensities),
-                        len(reference_spectrum.peaks.intensities),
-                    ),
                     "feature_id": query_spectrum.get("feature_id") or x + 1,
                     "reference_id": y,  # code copied from https://github.com/mandelbrot-project/met_annot_enhancer/blob/f8346fd3f7a9775d1d6638cf091d019167ba7ce1/src/dev/spectral_lib_matcher.py#L175
                     "predicted_inchikey": reference_spectrum.get("compound_name"),

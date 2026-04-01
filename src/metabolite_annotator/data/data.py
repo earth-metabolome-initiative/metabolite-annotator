@@ -10,11 +10,10 @@ from .download import _download_gnps, _download_isdb_neg, _download_isdb_pos
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def load_gnps(file_name: str | None = None) -> list[Spectrum]:
     if not file_name:
-        filename = config.gnps_path
+        filename = str(config.gnps_path)
     else:
         filename = file_name
 
@@ -38,7 +37,6 @@ def load_gnps(file_name: str | None = None) -> list[Spectrum]:
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def load_isdb_pos(file_name: str | None = None) -> list[Spectrum]:
     if not file_name:
@@ -50,7 +48,7 @@ def load_isdb_pos(file_name: str | None = None) -> list[Spectrum]:
     spectra = []
     for spectrum in tqdm(
         load_from_mgf(filename),
-        desc="Loading GNPS spectra",
+        desc="Loading ISDB positive spectra",
         leave=False,
     ):
         spectrum = default_filters(spectrum)
@@ -66,7 +64,6 @@ def load_isdb_pos(file_name: str | None = None) -> list[Spectrum]:
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def load_isdb_neg(file_name: str | None = None) -> list[Spectrum]:
     if not file_name:
@@ -78,7 +75,7 @@ def load_isdb_neg(file_name: str | None = None) -> list[Spectrum]:
     spectra = []
     for spectrum in tqdm(
         load_from_mgf(filename),
-        desc="Loading GNPS spectra",
+        desc="Loading ISDB negative spectra",
         leave=False,
     ):
         spectrum = default_filters(spectrum)

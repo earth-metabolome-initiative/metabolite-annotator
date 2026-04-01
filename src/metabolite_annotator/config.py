@@ -35,7 +35,6 @@ class PrecursorMZToleranceType(StrEnum):
 
 @dataclass
 class Config:
-    cache_dir: Path = field(default_factory=_default_cache_dir)
     project_root: Path = field(default_factory=lambda: Path.cwd())
 
     results_dir: Path = field(default_factory=lambda: Path.cwd() / "results")
@@ -46,12 +45,22 @@ class Config:
     ms2_similarity: BaseSimilarity = ModifiedCosineGreedy()
 
     def __post_init__(self) -> None:
-        if not isinstance(self.cache_dir, Path):
-            self.cache_dir = Path(self.cache_dir)
         if not isinstance(self.project_root, Path):
             self.project_root = Path(self.project_root)
 
-        os.environ["CACHE_DIR"] = str(self.cache_dir)
+        self.cache_dir = None
+
+    @property
+    def cache_dir(self) -> Path:
+        return self._cache_dir
+
+    @cache_dir.setter
+    def cache_dir(self, value: Path | None = None) -> None:
+        if value is None:
+            self._cache_dir = _default_cache_dir()
+        else:
+            self._cache_dir = value
+        os.environ["CACHE_DIR"] = str(self._cache_dir)
 
     @property
     def sirius_result_dir(self) -> Path:
@@ -102,4 +111,4 @@ class Config:
 
 # Module-level singleton — instantiated at import time so CACHE_DIR is set
 # before any @Cache decorator in download.py or loaders.py runs.
-config = Config(cache_dir=_default_cache_dir())
+config = Config()

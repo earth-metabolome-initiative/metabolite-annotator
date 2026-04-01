@@ -10,7 +10,6 @@ from ..constants.urls import GNPS_URL, ISDB_NEG_URL, ISDB_POS_URL
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def _download_gnps(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
@@ -26,7 +25,6 @@ def _download_gnps(output_dir: str) -> pd.DataFrame:
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def _download_isdb_pos(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
@@ -42,7 +40,6 @@ def _download_isdb_pos(output_dir: str) -> pd.DataFrame:
 
 @Cache(
     validity_duration=config.validity_duration,
-    cache_dir=str(config.cache_dir),
 )
 def _download_isdb_neg(output_dir: str) -> pd.DataFrame:
     output = Path(output_dir)
