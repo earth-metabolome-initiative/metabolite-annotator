@@ -1,8 +1,10 @@
 from pathlib import Path
 import click
 
-from .config import Config, IonMode, config, PrecursorMZToleranceType
-from .run import _run_cfmid, _run_gnps
+from .config import Config, IonMode, PrecursorMZToleranceType
+from .tools.sirius.instrument import InstrumentType
+
+from .run import _run_cfmid, _run_gnps, _run_sirius
 
 
 @click.group()
@@ -90,6 +92,36 @@ def gnps(
     config.precursor_mz_tolerance_type = precursor_mz_tolerance_type
     config.precursor_mz_tolerance = precursor_mz_tolerance
     _run_gnps(config, ctx.obj["input_mgf"])
+
+
+@main.command()
+@click.option(
+    "--instrument-type",
+    type=click.Choice(InstrumentType, case_sensitive=False),
+    default=InstrumentType.Orbitrap,
+    help="Instrument type setting for SIRIUS.",
+)
+@click.option(
+    "--project-name",
+    type=str,
+    default="sirius_results",
+    help="Name of the SIRIUS project.",
+)
+@click.option(
+    "--ms2-only",
+    is_flag=True,
+    help="If set, only MS2 spectra will be imported into SIRIUS. This is NOT recommended as SIRIUS uses MS1 for better annotation. This option defaults to False.",
+)
+@click.pass_context
+def sirius(ctx, instrument_type: InstrumentType, project_name: str, ms2_only: bool):
+    config: Config = ctx.obj["config"]
+    config.sirius_instrument_type = instrument_type
+    _run_sirius(
+        config=config,
+        input_mgf=ctx.obj["input_mgf"],
+        project_name=project_name,
+        ms2_only=ms2_only,
+    )
 
 
 @main.command()

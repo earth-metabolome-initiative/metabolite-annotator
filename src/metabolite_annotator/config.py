@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from matchms.similarity import ModifiedCosineGreedy
 from matchms.similarity.BaseSimilarity import BaseSimilarity
-
+from .tools.sirius.instrument import InstrumentType
 from .constants.cache_duration import VALIDITY_DURATION
 from .constants.urls import GNPS_FILENAME, ISDB_NEG_FILENAME, ISDB_POS_FILENAME
 
@@ -107,6 +107,8 @@ class Config:
                 "Environment variable SIRIUS_PW is not set ! Please set it in a .env file in the current directory."
             )
         return pw
+
+    sirius_instrument_type: InstrumentType = InstrumentType.Orbitrap
 
 
 # Module-level singleton — instantiated at import time so CACHE_DIR is set

@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Literal
-
+import pandas as pd
 from PySirius import AccountCredentials, ProjectInfo, PySiriusAPI, SiriusSDK
 
 from metabolite_annotator.config import Config
@@ -22,7 +22,7 @@ class Sirius:
         self.api: PySiriusAPI = api
         self.api.account().login(accept_terms, account_credentials)
         self.job_config = self.api.jobs().get_default_job_config()
-        self.set_instrument_type(InstrumentType.Orbitrap)
+        self.set_instrument_type(config.sirius_instrument_type)
 
         self.project_root: Path = config.sirius_result_dir
         self.project_info: ProjectInfo | None = None
@@ -83,3 +83,18 @@ class Sirius:
             raise ValueError("A project must be created before running a job.")
         job = self.api.jobs().start_job(self.project_info.project_id, self.job_config)
         self.api.wait_for_job_completion(self.project_info, job)
+
+    def results_to_dataframe(self) -> pd.DataFrame:
+        res = []
+        for feature in self.api.features().get_aligned_features(
+            self.project_info.project_id
+        ):
+            for annotation in self.api.features().get_structure_candidates(
+                self.project_info.project_id,
+                feature.aligned_feature_id,
+            ):
+                d = annotation.to_dict()
+                d["feature_id"] = feature.external_feature_id
+                res.append(d)
+
+        return pd.DataFrame(res)

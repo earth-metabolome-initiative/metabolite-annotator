@@ -1,6 +1,6 @@
 from pathlib import Path
 from metabolite_annotator.config import config
-from metabolite_annotator.tools import Sirius
+from metabolite_annotator.tools.sirius.sirius_config import Sirius
 
 
 def test_default_config():
