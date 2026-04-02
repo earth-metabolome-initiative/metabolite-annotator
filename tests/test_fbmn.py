@@ -9,4 +9,3 @@ def test_similarity_matrix():
     assert fbmn.ms2_similarity_matrix.shape == (len(fbmn.spectra), len(fbmn.spectra))
     graph = fbmn.create_molecular_network()
     assert graph.number_of_nodes() == len(fbmn.spectra)
-    assert 1 == 0, print(graph.get_edge_data(0, 8))
