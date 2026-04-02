@@ -33,7 +33,7 @@ class PrecursorMZToleranceType(StrEnum):
     DALTON = "Dalton"
 
 
-class FBMSimilarityType(StrEnum):
+class FBMNSimilarityType(StrEnum):
     COSINE = "cosine"
     ENTROPY = "spectral_entropy"
 
@@ -47,13 +47,16 @@ class Config:
     ionization_mode: IonMode = IonMode.POS
     precursor_mz_tolerance_type: PrecursorMZToleranceType = PrecursorMZToleranceType.PPM
     precursor_mz_tolerance: float = 20.0
-    ms2_similarity: BaseSimilarity = ModifiedCosineGreedy()
 
     def __post_init__(self) -> None:
         if not isinstance(self.project_root, Path):
             self.project_root = Path(self.project_root)
 
         self.cache_dir = None
+
+    @property
+    def ms2_similarity(self) -> BaseSimilarity:
+        return ModifiedCosineGreedy()
 
     @property
     def cache_dir(self) -> Path:
@@ -78,6 +81,10 @@ class Config:
     @property
     def gnps_result_dir(self) -> Path:
         return self.results_dir / "gnps"
+
+    @property
+    def fbmn_result_dir(self) -> Path:
+        return self.results_dir / "fbmn"
 
     @property
     def validity_duration(self) -> str:
@@ -114,7 +121,7 @@ class Config:
         return pw
 
     sirius_instrument_type: InstrumentType = InstrumentType.Orbitrap
-    fbmn_similarity_type: FBMSimilarityType = FBMSimilarityType.ENTROPY
+    fbmn_similarity_type: FBMNSimilarityType = FBMNSimilarityType.COSINE
     knn_neighbours: int = 5
     fbmn_sim_threshold: float = 0.7
 

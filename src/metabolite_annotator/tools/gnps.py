@@ -127,4 +127,9 @@ class GNPS(SpectralDB):
                     }
                 )
         df = pd.DataFrame(data)
+        df["rank"] = (
+            df.groupby("feature_id")["entropy_similarity"]
+            .rank(ascending=False, method="first")
+            .astype(int)
+        )
         return df

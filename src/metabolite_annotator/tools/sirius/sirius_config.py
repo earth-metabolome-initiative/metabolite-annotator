@@ -1,7 +1,14 @@
 from pathlib import Path
 from typing import Literal
 import pandas as pd
-from PySirius import AccountCredentials, ProjectInfo, PySiriusAPI, SiriusSDK
+from PySirius import (
+    AccountCredentials,
+    ProjectInfo,
+    PySiriusAPI,
+    SiriusSDK,
+    AlignedFeature,
+    AlignedFeatureOptField,
+)
 
 from metabolite_annotator.config import Config
 
@@ -84,10 +91,11 @@ class Sirius:
         job = self.api.jobs().start_job(self.project_info.project_id, self.job_config)
         self.api.wait_for_job_completion(self.project_info, job)
 
-    def results_to_dataframe(self) -> pd.DataFrame:
+    def get_structure_candidates(self) -> pd.DataFrame:
         res = []
         for feature in self.api.features().get_aligned_features(
-            self.project_info.project_id
+            self.project_info.project_id,
+            opt_fields=[AlignedFeatureOptField.TOPANNOTATIONS],
         ):
             for annotation in self.api.features().get_structure_candidates(
                 self.project_info.project_id,
@@ -95,8 +103,31 @@ class Sirius:
             ):
                 d = annotation.to_dict()
                 d["feature_id"] = feature.external_feature_id
+                self._add_npc_metadata(feature=feature, d=d)
                 res.append(d)
 
         df = pd.DataFrame(res)
-        df.drop(columns=["fingerprint", "structureSvg", "spectralLibraryMatches", "dbLinks"], inplace=True)
-        return pd.DataFrame(res)
+        df.drop(
+            columns=[
+                "fingerprint",
+                "structureSvg",
+                "spectralLibraryMatches",
+                "dbLinks",
+                "structureName",
+            ],
+            inplace=True,
+        )
+        return df
+
+    def _add_npc_metadata(self, feature: AlignedFeature, d: dict) -> dict:
+        if feature.top_annotations:
+            d["npc_pathway"] = (
+                feature.top_annotations.compound_class_annotation.npc_pathway.name
+            )
+            d["npc_superclass"] = (
+                feature.top_annotations.compound_class_annotation.npc_superclass.name
+            )
+            d["npc_class"] = (
+                feature.top_annotations.compound_class_annotation.npc_class.name
+            )
+        return d
