@@ -27,7 +27,7 @@ requires = ["uv_build>=0.11.1,<0.12.0"]
 build-backend = "uv_build"
 
 [project.scripts]
-annotate = "metabolite_annotator.cli:main"
+metabolite-annotator = "metabolite_annotator.cli:main"
 
 [dependency-groups]
 dev = ["ipython>=9.11.0", "pytest>=9.0.2", "ruff>=0.15.7"]
