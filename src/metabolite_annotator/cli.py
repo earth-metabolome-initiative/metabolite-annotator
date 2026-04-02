@@ -8,8 +8,13 @@ from .run import _run_cfmid, _run_gnps, _run_sirius, _run_fbmn
 
 
 @click.group()
-@click.argument("input_mgf", type=click.Path(exists=True))
-@click.option("--root", type=click.Path(), default=".", help="Project root directory")
+@click.option(
+    "--input_mgf",
+    "-i",
+    type=click.Path(exists=True),
+    required=True,
+    help="The input MGF to annotate.",
+)
 @click.option(
     "--output_dir",
     "-o",
@@ -18,16 +23,22 @@ from .run import _run_cfmid, _run_gnps, _run_sirius, _run_fbmn
     help="The directory where results will be stored.",
 )
 @click.option(
-    "--cache-dir",
-    type=click.Path(),
-    default=None,
-    help="The directory where cache will be stored. If not set, it will default to ~/.cache/metabolite-annotator",
-)
-@click.option(
     "--ion-mode",
     type=click.Choice(IonMode, case_sensitive=False),
     default=IonMode.POS,
     help="Ionization mode for the annotation",
+)
+@click.option(
+    "--root",
+    type=click.Path(),
+    default=".",
+    help="Project root directory. Defaults to the current working directory.",
+)
+@click.option(
+    "--cache-dir",
+    type=click.Path(),
+    default=None,
+    help="The directory where cache will be stored. If not set, it will default to ~/.cache/metabolite-annotator",
 )
 @click.pass_context
 def main(
@@ -165,6 +176,7 @@ def fbmn(
     knn_neighbours: int,
     threshold: float,
 ):
+    """Create a Molecular Network and save as a graphml file"""
     config: Config = ctx.obj["config"]
     config.fbmn_similarity_type = similarity_metric
     config.fbmn_sim_threshold = threshold

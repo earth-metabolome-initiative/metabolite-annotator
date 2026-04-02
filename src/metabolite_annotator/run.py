@@ -92,8 +92,8 @@ def _run_fbmn(config: Config, input_file: Path):
         df = pd.read_csv(config.gnps_result_dir / "annotation_results.csv")
         _add_metadata_to_graph(graph, df, prefix="gnps")
 
-    if (config.gnps_result_dir / "annotation_results.csv").exists():
-        df = pd.read_csv(config.gnps_result_dir / "annotation_results.csv")
+    if (config.sirius_result_dir / "annotation_results.csv").exists():
+        df = pd.read_csv(config.sirius_result_dir / "annotation_results.csv")
         _add_metadata_to_graph(graph, df, prefix="sirius")
 
     nx.write_graphml(graph, molecular_network_file)
@@ -107,6 +107,8 @@ def _add_metadata_to_graph(graph: nx.Graph, df: pd.DataFrame, prefix: str) -> No
     node_id_feature_id_pairs = list(graph.nodes(data="feature_id"))
 
     for node_id, feature_id in node_id_feature_id_pairs:
+        if feature_id not in d:
+            continue
         dict_for_feature = d[feature_id]
         for key in list(
             dict_for_feature.keys()
