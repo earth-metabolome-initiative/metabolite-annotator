@@ -6,6 +6,15 @@
 uv tool install git+https://github.com/earth-metabolome-initiative/metabolite-annotator
 ```
 
+If you want to use SIRIUS, you will need an account with them and have the sirius executable available on your computer.
+You can then add your SIRIUS username and password to your `.bashrc` file:
+
+```bash
+echo "SIRIUS_USER=YOUR_SIRIUS_USERNAME" >> ~/.bashrc
+echo "SIRIUS_PW=YOUR_SIRIUS_PASSWORD" >> ~/.bashrc
+```
+
+
 ## Example usage
 ```bash
 uvx metabolite-annotator --help
