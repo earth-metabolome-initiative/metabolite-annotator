@@ -132,8 +132,13 @@ def sirius_options(f):
 @main.command()
 @sirius_options
 @click.pass_context
-def sirius(ctx, instrument_type: InstrumentType, project_name: str, ms2_only: bool):
-    """Run Sirius with default parameters with eiter Orbitrap or QTOF depending on your instrumnet."""
+def sirius(
+    ctx,
+    instrument_type: InstrumentType,
+    project_name: str,
+    ms2_only: bool,
+):
+    """Run Sirius with default parameters with eiter Orbitrap or QTOF depending on your instrument."""
     config: Config = ctx.obj["config"]
     config.sirius_instrument_type = instrument_type
     _run_sirius(

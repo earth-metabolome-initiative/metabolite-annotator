@@ -106,7 +106,7 @@ class GNPS(SpectralDB):
                         "entropy_similarity": entropy_sim,
                         "feature_id": query_spectrum.get("feature_id") or feature_id,
                         "reference_id": y,  # code copied from https://github.com/mandelbrot-project/met_annot_enhancer/blob/f8346fd3f7a9775d1d6638cf091d019167ba7ce1/src/dev/spectral_lib_matcher.py#L175
-                        "predicted_inchikey": reference_spectrum.get("inchikey")[:14], # type: ignore
+                        "predicted_inchikey": reference_spectrum.get("inchikey")[:14],  # type: ignore
                         "predicted_smiles": reference_spectrum.get("smiles"),
                         "feature_entropy": me.calculate_spectral_entropy(
                             query_spectrum.peaks

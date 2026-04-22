@@ -41,7 +41,7 @@ def _run_sirius(
         _sirius_all(sirius, input_mgf)
 
     df = sirius.get_structure_candidates()
-    output_file = config.sirius_result_dir / "annotation_results.csv"
+    output_file = config.sirius_result_dir / "annotation_results.csv.gz"
     df.to_csv(output_file, index=False)
     if project_path.with_suffix(".sirius").exists():
         project_path.with_suffix(".sirius").unlink()
